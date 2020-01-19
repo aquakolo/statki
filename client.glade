@@ -2,11 +2,11 @@
 <!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
-  <object class="GtkWindow">
+  <object class="GtkWindow" id="window">
+    <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <child>
-      <placeholder/>
-    </child>
+    <property name="default_width">400</property>
+    <property name="default_height">300</property>
     <child>
       <object class="GtkButtonBox" id="mainmenu">
         <property name="visible">True</property>
