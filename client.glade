@@ -2,7 +2,7 @@
 <!-- Generated with glade 3.22.1 -->
 <interface domain="Polish">
   <requires lib="gtk+" version="3.20"/>
-  <object class="GtkWindow" id="window">
+  <object class="GtkWindow" id="window1">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="default_width">400</property>
@@ -15,7 +15,7 @@
         <property name="spacing">44</property>
         <property name="layout_style">center</property>
         <child>
-          <object class="GtkLabel" id="mm_lab1">
+          <object class="GtkLabel" id="mm_lab0">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">Statki</property>
@@ -70,6 +70,72 @@
             <property name="expand">True</property>
             <property name="fill">True</property>
             <property name="position">3</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkWindow" id="window2">
+    <property name="can_focus">False</property>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <object class="GtkFixed" id="rules">
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkLabel" id="rul_lab1">
+            <property name="width_request">619</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="valign">start</property>
+            <property name="label" translatable="yes">Każdy z graczy posiada po dwie plansze o wielkości 10x10 pól. Pola są oznaczone poprzez współrzędne literami od A do J i liczbami 1 do 10. Na jednej z plansz gracz zaznacza swoje statki, których położenie będzie odgadywał przeciwnik. Na drugiej zaznacza trafione statki przeciwnika i oddane przez siebie strzały. Statki ustawiane są w pionie lub poziomie.</property>
+            <property name="wrap">True</property>
+            <property name="wrap_mode">word-char</property>
+            <property name="track_visited_links">False</property>
+            <attributes>
+              <attribute name="font-desc" value="Courier 13"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="x">2</property>
+            <property name="y">59</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="rul_lab2">
+            <property name="width_request">100</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Każdy z graczy posiada:
+-1 statek na 5 pól
+-2 statki na 4 pola
+-3 statki na 3 pola
+-2 statki na 2 pola</property>
+            <attributes>
+              <attribute name="font-desc" value="Courier 13"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="x">10</property>
+            <property name="y">200</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="rul_lab0">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Opis gry</property>
+            <attributes>
+              <attribute name="font-desc" value="Latin Modern Mono Caps 20"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="x">250</property>
+            <property name="y">8</property>
           </packing>
         </child>
       </object>
