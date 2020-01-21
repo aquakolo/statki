@@ -6,8 +6,7 @@ GtkBuilder *builder;
 
 
 void on_mm_but2_clicked(GtkWidget* widget, gpointer user_data){
-	gtk_widget_hide(mainmenu);
-	gtk_widget_show(rules);
+	gtk_widget_show_all(window2);
 }
 
 
