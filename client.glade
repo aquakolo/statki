@@ -542,15 +542,15 @@ Napisany w C z użyciem GTK+, Glade,
                     <property name="can_focus">False</property>
                     <property name="baseline_row">2</property>
                     <child>
-                      <object class="GtkButton" id="A0">
-                        <property name="label" translatable="yes">A0</property>
+                      <object class="GtkButton" id="bbb">
+                        <property name="label" translatable="yes">b5</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                       </object>
                       <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">0</property>
+                        <property name="left_attach">4</property>
+                        <property name="top_attach">8</property>
                       </packing>
                     </child>
                     <child>
@@ -864,13 +864,16 @@ Napisany w C z użyciem GTK+, Glade,
             </child>
             <child>
               <object class="GtkRadioButton" id="shib5po">
+                <property name="label" translatable="yes">1</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
                 <property name="image">sh5po</property>
+                <property name="image_position">right</property>
                 <property name="always_show_image">True</property>
                 <property name="active">True</property>
                 <property name="draw_indicator">True</property>
+                <signal name="toggled" handler="on_41_toggled" swapped="no"/>
               </object>
               <packing>
                 <property name="x">350</property>
@@ -879,14 +882,17 @@ Napisany w C z użyciem GTK+, Glade,
             </child>
             <child>
               <object class="GtkRadioButton" id="shib4po">
+                <property name="label" translatable="yes">2</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
                 <property name="image">sh4po</property>
+                <property name="image_position">right</property>
                 <property name="always_show_image">True</property>
                 <property name="active">True</property>
                 <property name="draw_indicator">True</property>
                 <property name="group">shib5po</property>
+                <signal name="toggled" handler="on_31_toggled" swapped="no"/>
               </object>
               <packing>
                 <property name="x">350</property>
@@ -895,14 +901,17 @@ Napisany w C z użyciem GTK+, Glade,
             </child>
             <child>
               <object class="GtkRadioButton" id="shib3po">
+                <property name="label" translatable="yes">3</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
                 <property name="image">sh3po</property>
+                <property name="image_position">right</property>
                 <property name="always_show_image">True</property>
                 <property name="active">True</property>
                 <property name="draw_indicator">True</property>
                 <property name="group">shib5po</property>
+                <signal name="toggled" handler="on_21_toggled" swapped="no"/>
               </object>
               <packing>
                 <property name="x">350</property>
@@ -911,14 +920,17 @@ Napisany w C z użyciem GTK+, Glade,
             </child>
             <child>
               <object class="GtkRadioButton" id="shib2po">
+                <property name="label" translatable="yes">2</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
                 <property name="image">sh2po</property>
+                <property name="image_position">right</property>
                 <property name="always_show_image">True</property>
                 <property name="active">True</property>
                 <property name="draw_indicator">True</property>
                 <property name="group">shib5po</property>
+                <signal name="toggled" handler="on_11_toggled" swapped="no"/>
               </object>
               <packing>
                 <property name="x">350</property>
@@ -927,16 +939,17 @@ Napisany w C z użyciem GTK+, Glade,
             </child>
             <child>
               <object class="GtkRadioButton" id="shib5pi">
-                <property name="width_request">100</property>
-                <property name="height_request">80</property>
+                <property name="label" translatable="yes">1</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
                 <property name="image">sh5pi</property>
+                <property name="image_position">right</property>
                 <property name="always_show_image">True</property>
                 <property name="active">True</property>
                 <property name="draw_indicator">True</property>
                 <property name="group">shib5po</property>
+                <signal name="toggled" handler="on_40_toggled" swapped="no"/>
               </object>
               <packing>
                 <property name="x">350</property>
@@ -945,14 +958,17 @@ Napisany w C z użyciem GTK+, Glade,
             </child>
             <child>
               <object class="GtkRadioButton" id="shib4pi">
+                <property name="label" translatable="yes">2</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
                 <property name="image">sh4pi</property>
+                <property name="image_position">right</property>
                 <property name="always_show_image">True</property>
                 <property name="active">True</property>
                 <property name="draw_indicator">True</property>
                 <property name="group">shib5po</property>
+                <signal name="toggled" handler="on_30_toggled" swapped="no"/>
               </object>
               <packing>
                 <property name="x">400</property>
@@ -961,14 +977,17 @@ Napisany w C z użyciem GTK+, Glade,
             </child>
             <child>
               <object class="GtkRadioButton" id="shib3pi">
+                <property name="label" translatable="yes">3</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
                 <property name="image">sh3pi</property>
+                <property name="image_position">right</property>
                 <property name="always_show_image">True</property>
                 <property name="active">True</property>
                 <property name="draw_indicator">True</property>
                 <property name="group">shib5po</property>
+                <signal name="toggled" handler="on_20_toggled" swapped="no"/>
               </object>
               <packing>
                 <property name="x">400</property>
@@ -977,14 +996,17 @@ Napisany w C z użyciem GTK+, Glade,
             </child>
             <child>
               <object class="GtkRadioButton" id="shib2pi">
+                <property name="label" translatable="yes">2</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
                 <property name="image">sh2pi</property>
+                <property name="image_position">right</property>
                 <property name="always_show_image">True</property>
                 <property name="active">True</property>
                 <property name="draw_indicator">True</property>
                 <property name="group">shib5po</property>
+                <signal name="toggled" handler="on_10_toggled" swapped="no"/>
               </object>
               <packing>
                 <property name="x">350</property>
