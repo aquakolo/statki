@@ -76,12 +76,15 @@
     </child>
   </object>
   <object class="GtkWindow" id="window2">
+    <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <property name="resizable">False</property>
     <child>
       <placeholder/>
     </child>
     <child>
       <object class="GtkFixed" id="rules">
+        <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child>
           <object class="GtkLabel" id="rul_lab1">
@@ -128,13 +131,16 @@
           <object class="GtkLabel" id="rul_lab0">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Opis gry</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
+            <property name="label" translatable="yes">Zasady gry</property>
+            <property name="single_line_mode">True</property>
             <attributes>
               <attribute name="font-desc" value="Latin Modern Mono Caps 20"/>
             </attributes>
           </object>
           <packing>
-            <property name="x">250</property>
+            <property name="x">235</property>
             <property name="y">8</property>
           </packing>
         </child>
