@@ -542,16 +542,7 @@ Napisany w C z użyciem GTK+, Glade,
                     <property name="can_focus">False</property>
                     <property name="baseline_row">2</property>
                     <child>
-                      <object class="GtkButton" id="bbb">
-                        <property name="label" translatable="yes">b5</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">4</property>
-                        <property name="top_attach">8</property>
-                      </packing>
+                      <placeholder/>
                     </child>
                     <child>
                       <placeholder/>
