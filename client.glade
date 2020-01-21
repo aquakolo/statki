@@ -3,73 +3,156 @@
 <interface domain="Polish">
   <requires lib="gtk+" version="3.20"/>
   <object class="GtkWindow" id="window1">
+    <property name="name">Statki - Menu</property>
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="default_width">400</property>
     <property name="default_height">300</property>
     <child>
-      <object class="GtkButtonBox" id="mainmenu">
+      <placeholder/>
+    </child>
+    <child>
+      <object class="GtkStack" id="menu">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="orientation">vertical</property>
-        <property name="spacing">44</property>
-        <property name="layout_style">center</property>
+        <property name="interpolate_size">True</property>
         <child>
-          <object class="GtkLabel" id="mm_lab0">
+          <object class="GtkButtonBox" id="main_menu">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Statki</property>
-            <property name="justify">center</property>
-            <attributes>
-              <attribute name="font-desc" value="Latin Modern Mono Caps 30"/>
-            </attributes>
+            <property name="orientation">vertical</property>
+            <property name="spacing">44</property>
+            <property name="layout_style">center</property>
+            <child>
+              <object class="GtkLabel" id="mm_lab0">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Statki</property>
+                <property name="justify">center</property>
+                <attributes>
+                  <attribute name="font-desc" value="Latin Modern Mono Caps 30"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="mm_but1">
+                <property name="label" translatable="yes">Nowa gra</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_mm_but1_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="mm_but2">
+                <property name="label" translatable="yes">Zasady gry</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_mm_but2_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="mm_but3">
+                <property name="label" translatable="yes">O programie</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_mm_but3_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
           </object>
           <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
+            <property name="name">main</property>
+            <property name="title" translatable="yes">Main</property>
           </packing>
         </child>
         <child>
-          <object class="GtkButton" id="mm_but1">
-            <property name="label" translatable="yes">Nowa gra</property>
+          <object class="GtkButtonBox" id="newgame_menu">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <signal name="clicked" handler="on_mm_but1_clicked" swapped="no"/>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <property name="spacing">29</property>
+            <property name="layout_style">center</property>
+            <child>
+              <object class="GtkLabel" id="ng_lab1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Nowa Gra</property>
+                <attributes>
+                  <attribute name="font-desc" value="Latin Modern Mono Caps 20"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="ng_ent2">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="max_width_chars">100</property>
+                <property name="text" translatable="yes">Player</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="ng_but3">
+                <property name="label" translatable="yes">Single Player</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="ng_but4">
+                <property name="label" translatable="yes">Multi Player</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
           </object>
           <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
+            <property name="name">newgame</property>
+            <property name="title" translatable="yes">Nowa Gra</property>
             <property name="position">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="mm_but2">
-            <property name="label" translatable="yes">Zasady gry</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <signal name="clicked" handler="on_mm_but2_clicked" swapped="no"/>
-          </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="position">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="mm_but3">
-            <property name="label" translatable="yes">O programie</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <signal name="clicked" handler="on_mm_but3_clicked" swapped="no"/>
-          </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="position">3</property>
           </packing>
         </child>
       </object>
@@ -84,6 +167,7 @@
     </child>
     <child>
       <object class="GtkFixed" id="rules">
+        <property name="name">Rules</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child>
@@ -236,7 +320,9 @@
     </child>
   </object>
   <object class="GtkWindow" id="window3">
+    <property name="name">About Program</property>
     <property name="can_focus">False</property>
+    <property name="resizable">False</property>
     <child>
       <placeholder/>
     </child>
@@ -274,7 +360,7 @@
             </attributes>
           </object>
           <packing>
-            <property name="x">140</property>
+            <property name="x">175</property>
             <property name="y">8</property>
           </packing>
         </child>
