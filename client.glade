@@ -78,7 +78,7 @@
   <object class="GtkWindow" id="window2">
     <property name="can_focus">False</property>
     <property name="default_width">440</property>
-    <property name="default_height">250</property>
+    <property name="default_height">260</property>
     <child>
       <placeholder/>
     </child>
@@ -141,6 +141,140 @@
           </object>
           <packing>
             <property name="x">235</property>
+            <property name="y">8</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkImage" id="st50">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixbuf">statek5pozi.png</property>
+          </object>
+          <packing>
+            <property name="x">205</property>
+            <property name="y">219</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkImage" id="st40">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixbuf">statek4pozi.png</property>
+          </object>
+          <packing>
+            <property name="x">205</property>
+            <property name="y">241</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkImage" id="st30">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixbuf">statek3pozi.png</property>
+          </object>
+          <packing>
+            <property name="x">205</property>
+            <property name="y">263</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkImage" id="st20">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixbuf">statek2pozi.png</property>
+          </object>
+          <packing>
+            <property name="x">205</property>
+            <property name="y">285</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkImage" id="st51">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixbuf">statek5pion.png</property>
+          </object>
+          <packing>
+            <property name="x">310</property>
+            <property name="y">214</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkImage" id="st41">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixbuf">statek4pion.png</property>
+          </object>
+          <packing>
+            <property name="x">332</property>
+            <property name="y">214</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkImage" id="st31">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixbuf">statek3pion.png</property>
+          </object>
+          <packing>
+            <property name="x">354</property>
+            <property name="y">214</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkImage" id="st21">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixbuf">statek2pion.png</property>
+          </object>
+          <packing>
+            <property name="x">376</property>
+            <property name="y">214</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkWindow" id="window3">
+    <property name="can_focus">False</property>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <object class="GtkFixed" id="about">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkLabel" id="abo_lab1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Program w całości tworzony przez Piotra Mańkowskiego.
+
+</property>
+            <property name="track_visited_links">False</property>
+            <attributes>
+              <attribute name="font-desc" value="Courier 13"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="x">2</property>
+            <property name="y">59</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="abo_lab">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
+            <property name="label" translatable="yes">O programie</property>
+            <property name="single_line_mode">True</property>
+            <attributes>
+              <attribute name="font-desc" value="Latin Modern Mono Caps 20"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="x">140</property>
             <property name="y">8</property>
           </packing>
         </child>
