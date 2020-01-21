@@ -92,10 +92,10 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="orientation">vertical</property>
-            <property name="spacing">29</property>
+            <property name="spacing">25</property>
             <property name="layout_style">center</property>
             <child>
-              <object class="GtkLabel" id="ng_lab1">
+              <object class="GtkLabel" id="ng_lab0">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Nowa Gra</property>
@@ -110,7 +110,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkEntry" id="ng_ent2">
+              <object class="GtkEntry" id="ng_ent1">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="max_width_chars">100</property>
@@ -123,7 +123,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="ng_but3">
+              <object class="GtkButton" id="ng_but1">
                 <property name="label" translatable="yes">Single Player</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -136,7 +136,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="ng_but4">
+              <object class="GtkButton" id="ng_but2">
                 <property name="label" translatable="yes">Multi Player</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -148,11 +148,110 @@
                 <property name="position">3</property>
               </packing>
             </child>
+            <child>
+              <object class="GtkButton" id="ng_back">
+                <property name="label" translatable="yes">Cofnij</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_ng_back_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">4</property>
+              </packing>
+            </child>
           </object>
           <packing>
             <property name="name">newgame</property>
             <property name="title" translatable="yes">Nowa Gra</property>
             <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButtonBox" id="level_menu">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <property name="spacing">23</property>
+            <property name="layout_style">center</property>
+            <child>
+              <object class="GtkLabel" id="lm_lab0">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Poziom trudności</property>
+                <attributes>
+                  <attribute name="font-desc" value="Latin Modern Mono Caps 20"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="lm_easy">
+                <property name="label" translatable="yes">Łatwy</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_lm_easy_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="lm_nor">
+                <property name="label" translatable="yes">Normalny</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_lm_nor_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="lm_cheat">
+                <property name="label" translatable="yes">Jeden strzał</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_lm_cheat_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="lm_back">
+                <property name="label" translatable="yes">Cofnij</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_lm_back_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">4</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="name">level</property>
+            <property name="title" translatable="yes">Poziom trudności</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>
@@ -335,6 +434,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">Program w całości tworzony przez Piotra Mańkowskiego.
+Napisany w C z użyciem GTK+, Glade, 
 
 </property>
             <property name="track_visited_links">False</property>

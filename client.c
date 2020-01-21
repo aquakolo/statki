@@ -10,6 +10,9 @@ char pname[100]="Player";
 void on_mm_but1_clicked(){
 	gtk_stack_set_visible_child_name(menu,"newgame");
 }
+void on_ng_back_clicked(){
+	gtk_stack_set_visible_child_name(menu,"main");
+}
 void on_mm_but2_clicked(){
 	window2 =GTK_WIDGET(gtk_builder_get_object(builder,"window2"));
 	gtk_widget_show_all(window2);
@@ -21,7 +24,12 @@ void on_mm_but3_clicked(){
 void on_ng_ent1_changed(GtkEntry* entry){
 	sprintf(pname,"entry=%s",gtk_entry_get_text(entry));
 }
-
+void on_ng_but1_clicked(){
+	gtk_stack_set_visible_child_name(menu,"level");
+}
+void on_lm_back_clicked(){
+	gtk_stack_set_visible_child_name(menu,"newgame");
+}
 
 int main(int argc, char *argv[]){
 
