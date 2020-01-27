@@ -2,18 +2,12 @@
 #include<gtk/gtkx.h>
 #include"gtk.h"
 #include"else.h"
+#include"bot.h"
 
 GtkWidget *window1, *board, *buttonres, *fin;
 GtkStack *menu;
 GtkBuilder *builder;
 GtkWidget *shipchoice[4][2];
-
-typedef struct{
-	char y;
-	int x;
-	int size;
-	bool dir;
-}shipclass;
 
 
 int level;
@@ -26,7 +20,7 @@ int howmanyships=8;
 int field[10][10]={0};
 bool shipfree[9];
 shipclass ships[9];
-const int ay=7, m0=3, o0=17;
+const int ay=7, m0=3, o0=18;
 
 void on_fin_clicked(){
 	gtk_stack_set_visible_child_name(menu,"boards_game");
@@ -114,6 +108,34 @@ void fill_boards(){
 		gtk_widget_show(ship);
 		gtk_grid_attach((GtkGrid *)board,ship,m0+ships[c].x,ay+ships[c].y-'A',1+(ships[c].size-1)*ships[c].dir,1+(ships[c].size-1)*(ships[c].dir^1));
 	}
+
+	for(char i=0;i<=9;i++){
+		for(char j=0;j<=9;j++){
+			GtkWidget *but=gtk_button_new();
+			GtkWidget *image=gtk_image_new_from_file("dot.png");
+			gtk_button_set_image ((GtkButton *)but,image);
+			g_signal_connect (G_OBJECT(but), "clicked", G_CALLBACK(on_shoot_clicked), NULL);
+			gtk_widget_show(but);
+			gtk_grid_attach((GtkGrid *)board,(GtkWidget *)but,j+o0,i+ay,1,1);
+		}
+	}
+	GtkWidget *image=gtk_image_new_from_file("cross.png");
+	gtk_widget_show(image);
+	gtk_grid_attach((GtkGrid *)board,image,1+m0,ay,1,1);
+	start(level);
+}
+void on_shoot_clicked(GtkButton *but){
+	int c, d;bool ok=false;
+	for(c=ay;c<ay+10;c++){
+		for(d=o0;d<o0+10;d++){
+			if(but==gtk_grid_get_child_at((GtkGrid *)board, c, d)){
+				ok=true;
+				break;
+			}
+		}
+		if(ok)break;
+	}
+	shoot(c-ay, d-o0);
 }
 
 void pictureadd(int size,int k,int w,int h){

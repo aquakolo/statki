@@ -29,3 +29,5 @@ void on_space_clicked(GtkButton *button);
 void gtk_on();
 void set_boards();
 void fill_boards();
+void on_give_up_clicked();
+void on_shoot_clicked(GtkButton *but);//to do
