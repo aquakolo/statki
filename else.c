@@ -1,5 +1,6 @@
 #include"else.h"
 #include<stdbool.h>
+
 bool good2(int c,int d, int field[][10]){
 	bool goodw=(d < 10);
 	goodw&=(c < 10);
