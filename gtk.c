@@ -1,10 +1,9 @@
 #include<gtk/gtk.h>
 #include<gtk/gtkx.h>
 #include"gtk.h"
-#include"else.h"
 #include"bot.h"
 
-GtkWidget *window1, *board, *buttonres, *fin;
+GtkWidget *window1, *board, *buttonres, *fin, *message;
 GtkStack *menu;
 GtkBuilder *builder;
 GtkWidget *shipchoice[4][2];
@@ -46,11 +45,6 @@ void on_lm_back_clicked(){
 	gtk_stack_set_visible_child_name(menu,"newgame");
 }
 void on_give_up_clicked(){
-	howmanyships=8;
-	for(int c=0;c<10;c++)for(int d=0;d<10;d++)field[c][d]=0;
-	for(int c=0;c<9;c++)shipfree[c]=0;
-	ship[0]=2;ship[1]=3;ship[2]=2;ship[3]=1;
-	shipn=4; shipk=1;
 	on_backtomenu_clicked();
 }
 
@@ -128,14 +122,40 @@ void on_shoot_clicked(GtkButton *but){
 	int c, d;bool ok=false;
 	for(c=ay;c<ay+10;c++){
 		for(d=o0;d<o0+10;d++){
-			if(but==gtk_grid_get_child_at((GtkGrid *)board, c, d)){
+			if((GtkWidget *)but==gtk_grid_get_child_at((GtkGrid *)board, d, c)){
 				ok=true;
 				break;
 			}
 		}
 		if(ok)break;
 	}
-	shoot(c-ay, d-o0);
+	int result=shoot(d-o0, c-ay);
+	if(result<2){
+		GtkWidget *image;
+		gtk_widget_destroy((GtkWidget *)but);
+		if(result==0)image=gtk_image_new_from_file("see.png");
+		if(result==1)image=gtk_image_new_from_file("hit.png");
+		gtk_widget_show(image);
+		gtk_grid_attach((GtkGrid *)board,(GtkWidget *)image,d,c,1,1);
+		if(result==0)gtk_label_set_markup((GtkLabel *)message, "<span foreground=\"black\" font_desc=\"FreeSans Semi-Bold 14\">Pudło!\nRuch przeciwnika.</span>");
+		if(result==1)gtk_label_set_markup((GtkLabel *)message, "<span foreground=\"black\" font_desc=\"FreeSans Semi-Bold 14\">Trafiony!\nTwój ruch.</span>");
+
+	}
+	else{
+		gtk_label_set_markup((GtkLabel *)message, "<span foreground=\"black\" font_desc=\"FreeSans Semi-Bold 14\">Trafiony, Zatopiony!\nTwój ruch.</span>");
+		int x, y, size;
+		bool dir=result/1000;result-=dir*1000;
+		size=result/100;result-=size*100;
+		y=result/10;result-=y*10;
+		x=result;
+		for(int c=0;c<size;c++){
+			gtk_widget_destroy(gtk_grid_get_child_at((GtkGrid *)board,o0+x+c*dir, ay+y+c*(dir^1)));
+		}
+		char t[]="s0pod.png";t[1]+=size;if(dir==0){t[3]='i';}
+		GtkWidget *image=gtk_image_new_from_file(t);
+		gtk_widget_show(image);
+		gtk_grid_attach((GtkGrid *)board, image, x+o0, y+ay, 1+(size-1)*dir, 1+(size-1)*(dir^1));
+	}
 }
 
 void pictureadd(int size,int k,int w,int h){
@@ -221,9 +241,9 @@ void rem(int x, GtkButton *button){
 			if(field[c][d]==x){field[c][d]=0;possx=d;possy2=possy; possy=c;}
 		}
 	}
-	if(x<2)s=2;
-	else if(x<5)s=3;
-	else if(x<7)s=4;
+	if(x<=2)s=2;
+	else if(x<=5)s=3;
+	else if(x<=7)s=4;
 	else s=5;
 	picturedel(s,(possy2-possy)^1,possx, possy, button);
 	ship[s-2]++;
@@ -288,6 +308,7 @@ void gtk_on(){
 	window1 = GTK_WIDGET(gtk_builder_get_object(builder,"window1"));
 	menu = GTK_STACK(gtk_builder_get_object(builder,"menu"));
 	fin = GTK_WIDGET(gtk_builder_get_object(builder,"fin"));
+	message = GTK_WIDGET(gtk_builder_get_object(builder,"message"));
 	g_signal_connect (G_OBJECT(window1), "destroy", G_CALLBACK(gtk_main_quit), NULL);
 	
 	board =GTK_WIDGET(gtk_builder_get_object(builder,"board"));
