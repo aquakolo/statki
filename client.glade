@@ -50,6 +50,7 @@
     <property name="resizable">False</property>
     <property name="default_width">600</property>
     <property name="default_height">400</property>
+    <property name="icon">pl.png</property>
     <child>
       <placeholder/>
     </child>
@@ -405,7 +406,7 @@ Napisany w C z użyciem GTK+, Glade,
             </child>
             <child>
               <object class="GtkButton" id="ng_but1">
-                <property name="label" translatable="yes">Single Player</property>
+                <property name="label" translatable="yes">Jednoosobowy</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -419,7 +420,7 @@ Napisany w C z użyciem GTK+, Glade,
             </child>
             <child>
               <object class="GtkButton" id="ng_but2">
-                <property name="label" translatable="yes">Multi Player</property>
+                <property name="label" translatable="yes">Wieloosobowy</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -819,7 +820,7 @@ Napisany w C z użyciem GTK+, Glade,
                 </attributes>
               </object>
               <packing>
-                <property name="left_attach">5</property>
+                <property name="left_attach">4</property>
                 <property name="top_attach">5</property>
                 <property name="width">5</property>
               </packing>
@@ -837,7 +838,7 @@ Napisany w C z użyciem GTK+, Glade,
                 </attributes>
               </object>
               <packing>
-                <property name="left_attach">21</property>
+                <property name="left_attach">22</property>
                 <property name="top_attach">5</property>
                 <property name="width">5</property>
               </packing>

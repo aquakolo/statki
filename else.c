@@ -22,6 +22,7 @@ int find(int lship[],int shipn, bool shipfree[]){
 	for(;p<k;p++){
 		if(shipfree[p]==0){shipfree[p]=1;return p;} 
 	}
+	return 0;
 }
 
 cell *new(int x, int y, cell *last, cell *next){

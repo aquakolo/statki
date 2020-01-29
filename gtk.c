@@ -13,7 +13,7 @@ GtkStack *menu;
 GtkBuilder *builder;
 GtkWidget *shipchoice[4][2];
 
-
+bool set=0;
 int level;
 int ship[4]={2,3,2,1};
 int lship[4]={1,3,6,8};
@@ -26,11 +26,12 @@ int field[10][10]={0};
 int livep[9]={0,2,2,3,3,3,4,4,5};
 bool shipfree[9];
 shipclass ships[9];
+int lp=26;
 const int ay=7, m0=3, o0=18;
 
 void on_fin_clicked(){
 	gtk_stack_set_visible_child_name(menu,"boards_game");
-	set_boards();
+	if(!set)set_boards();
 	fill_boards();
 }
 void on_mm_but1_clicked(){
@@ -90,11 +91,12 @@ void set_boards(){
 
 void fill_boards(){
 	GtkWidget *see;
-	char name[]="see.png";
 	for(int c=0;c<10;c++){
 		for(int d=0;d<10;d++){
+			see=gtk_grid_get_child_at((GtkGrid *)board,m0+d,ay+c);
+			if(see!=NULL)gtk_widget_destroy(see);
 			if(field[c][d]==0){
-				see=gtk_image_new_from_file(name);
+				see=gtk_image_new_from_file("see.png");
 				gtk_widget_show(see);
 				gtk_grid_attach((GtkGrid *)board,see,m0+d,ay+c,1,1);
 			}
@@ -114,6 +116,8 @@ void fill_boards(){
 
 	for(char i=0;i<=9;i++){
 		for(char j=0;j<=9;j++){
+			see=gtk_grid_get_child_at((GtkGrid *)board,o0+j,ay+i);
+			if(see!=NULL)gtk_widget_destroy(see);
 			GtkWidget *but=gtk_button_new();
 			GtkWidget *image=gtk_image_new_from_file("dot.png");
 			gtk_button_set_image ((GtkButton *)but,image);
@@ -122,9 +126,8 @@ void fill_boards(){
 			gtk_grid_attach((GtkGrid *)board,(GtkWidget *)but,j+o0,i+ay,1,1);
 		}
 	}
-	GtkWidget *image=gtk_image_new_from_file("cross.png");
-	gtk_widget_show(image);
-	gtk_grid_attach((GtkGrid *)board,image,1+m0,ay,1,1);
+	int temp[9]={0,2,2,3,3,3,4,4,5}
+	for(int c=0;c<9;c++)livep[c]=temp[c];
 	start_bot(level, field);
 }
 void on_shoot_clicked(GtkButton *but){
@@ -157,12 +160,16 @@ void on_shoot_clicked(GtkButton *but){
 	else{
 		gtk_label_set_markup((GtkLabel *)message, "<span foreground=\"black\" font_desc=\"FreeSans Semi-Bold 14\">Trafiony, Zatopiony!\nTwój ruch.</span>");
 		int x, y, size;
-		bool dir=result/1000;result-=dir*1000;
+		int dir=result/1000;result-=dir*1000;
 		size=result/100;result-=size*100;
 		y=result/10;result-=y*10;
 		x=result;
+		GtkWidget *was;
+		printf("%d %d %d %d %d\n",x,y,o0,ay,(int)dir);
 		for(int c=0;c<size;c++){
-			gtk_widget_destroy(gtk_grid_get_child_at((GtkGrid *)board,o0+x+c*dir, ay+y+c*(dir^1)));
+			printf("%d\n", c);
+			was=gtk_grid_get_child_at((GtkGrid *)board,o0+x+c*dir, ay+y+c*(dir^1));
+			if(was!=NULL)gtk_widget_destroy(was);
 		}
 		char t[]="s0pod.png";t[1]+=size;if(dir==0){t[3]='i';}
 		GtkWidget *image=gtk_image_new_from_file(t);
@@ -188,20 +195,15 @@ void opturn(){
 		p=field[y][x];
 		if(p!=0){
 			livep[p]--;
-			printf("T1\n");
+			lp--;
 			if(livep[p]!=0){
-				printf("T2\n");
 				answer(x, y, 1);
-				printf("T3\n");
 				gtk_label_set_markup((GtkLabel *)message, "<span foreground=\"black\" font_desc=\"FreeSans Semi-Bold 14\">Zostałeś trafiony!\nRuch przeciwnika.</span>");
 			}
 			else{
-				printf("T4\n");
-				answer(ships[p].x, ships[p].y, ships[p].dir*10+ships[p].size);
-				printf("T5\n");
+				answer(ships[p].x, ships[p].y, (int)(ships[p].dir)*10+ships[p].size);
 				gtk_label_set_markup((GtkLabel *)message, "<span foreground=\"black\" font_desc=\"FreeSans Semi-Bold 14\">Zostałeś zniszczony!\nRuch przeciwnika.</span>");
 			}
-			printf("T6\n");
 			if(x>0 && field[y][x-1]==p && x<9 && field[y][x+1]==p)image=gtk_image_new_from_file("sd.png");
 			else if(x<9 && field[y][x+1]==p)image=gtk_image_new_from_file("ld.png");
 			else if(x>0 && field[y][x-1]==p)image=gtk_image_new_from_file("pd.png");
@@ -213,7 +215,12 @@ void opturn(){
 		gtk_widget_show(image);
 		gtk_widget_destroy(gtk_grid_get_child_at((GtkGrid *)board, x+m0, y+ay));
 		gtk_grid_attach((GtkGrid *)board,image, x+m0, y+ay, 1, 1);
-	}while(p!=0);
+	}while(p!=0 && !lose());
+}
+
+bool lose(){
+	if(lp==0)return true;
+	return false;
 }
 
 void pictureadd(int size,int k,int w,int h){

@@ -50,6 +50,7 @@
     <property name="resizable">False</property>
     <property name="default_width">600</property>
     <property name="default_height">400</property>
+    <property name="icon">pl.png</property>
     <child>
       <placeholder/>
     </child>
@@ -140,7 +141,7 @@
             <property name="can_focus">False</property>
             <child>
               <object class="GtkLabel" id="rul_lab1">
-                <property name="width_request">600</property>
+                <property name="width_request">590</property>
                 <property name="height_request">80</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -148,7 +149,8 @@
                 <property name="valign">start</property>
                 <property name="label" translatable="yes">Każdy z graczy posiada po dwie plansze o wielkości 10x10 pól. Pola są oznaczone poprzez współrzędne literami od A do J i liczbami 1 do 10. Na jednej z plansz gracz zaznacza swoje statki, których położenie będzie odgadywał przeciwnik. Na drugiej zaznacza trafione statki przeciwnika i oddane przez siebie strzały. Statki ustawiane są w pionie lub poziomie.</property>
                 <property name="wrap">True</property>
-                <property name="wrap_mode">word-char</property>
+                <property name="width_chars">75</property>
+                <property name="max_width_chars">80</property>
                 <property name="track_visited_links">False</property>
                 <attributes>
                   <attribute name="font-desc" value="Courier 13"/>
@@ -404,7 +406,7 @@ Napisany w C z użyciem GTK+, Glade,
             </child>
             <child>
               <object class="GtkButton" id="ng_but1">
-                <property name="label" translatable="yes">Single Player</property>
+                <property name="label" translatable="yes">Jednoosobowy</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -418,7 +420,7 @@ Napisany w C z użyciem GTK+, Glade,
             </child>
             <child>
               <object class="GtkButton" id="ng_but2">
-                <property name="label" translatable="yes">Multi Player</property>
+                <property name="label" translatable="yes">Wieloosobowy</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -818,7 +820,7 @@ Napisany w C z użyciem GTK+, Glade,
                 </attributes>
               </object>
               <packing>
-                <property name="left_attach">5</property>
+                <property name="left_attach">4</property>
                 <property name="top_attach">5</property>
                 <property name="width">5</property>
               </packing>
@@ -836,7 +838,7 @@ Napisany w C z użyciem GTK+, Glade,
                 </attributes>
               </object>
               <packing>
-                <property name="left_attach">21</property>
+                <property name="left_attach">22</property>
                 <property name="top_attach">5</property>
                 <property name="width">5</property>
               </packing>
