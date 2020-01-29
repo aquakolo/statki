@@ -27,6 +27,7 @@ int livep[9]={0,2,2,3,3,3,4,4,5};
 bool shipfree[9];
 shipclass ships[9];
 int lp=26;
+bool fin;
 const int ay=7, m0=3, o0=18;
 
 void on_fin_clicked(){
@@ -128,9 +129,13 @@ void fill_boards(){
 	}
 	int temp[9]={0,2,2,3,3,3,4,4,5}
 	for(int c=0;c<9;c++)livep[c]=temp[c];
+	hmships=8;
+	lp=26
 	start_bot(level, field);
+	fin=0;
 }
 void on_shoot_clicked(GtkButton *but){
+	if(fin)return;
 	int c, d;bool ok=false;
 	for(c=ay;c<ay+10;c++){
 		for(d=o0;d<o0+10;d++){
@@ -154,6 +159,7 @@ void on_shoot_clicked(GtkButton *but){
 		while(gtk_events_pending()) gtk_main_iteration();
 		if(result==0){
 			opturn();
+			if(fin)return;
 			gtk_label_set_markup((GtkLabel *)message, "<span foreground=\"black\" font_desc=\"FreeSans Semi-Bold 14\">Przeciwnik spudłował!\nTwój ruch.</span>");
 		}
 	}
@@ -165,9 +171,7 @@ void on_shoot_clicked(GtkButton *but){
 		y=result/10;result-=y*10;
 		x=result;
 		GtkWidget *was;
-		printf("%d %d %d %d %d\n",x,y,o0,ay,(int)dir);
 		for(int c=0;c<size;c++){
-			printf("%d\n", c);
 			was=gtk_grid_get_child_at((GtkGrid *)board,o0+x+c*dir, ay+y+c*(dir^1));
 			if(was!=NULL)gtk_widget_destroy(was);
 		}
@@ -180,6 +184,7 @@ void on_shoot_clicked(GtkButton *but){
 	if(hmships==0){
 		gtk_label_set_markup((GtkLabel *)message, "<span foreground=\"black\" font_desc=\"FreeSans Semi-Bold 14\">Wygrałeś!!!</span>");
 		gtk_button_set_label((GtkButton *)give_up, "Koniec");
+		fin=1;
 	}
 }
 
@@ -216,6 +221,8 @@ void opturn(){
 		gtk_widget_destroy(gtk_grid_get_child_at((GtkGrid *)board, x+m0, y+ay));
 		gtk_grid_attach((GtkGrid *)board,image, x+m0, y+ay, 1, 1);
 	}while(p!=0 && !lose());
+	if(lose()){gtk_label_set_markup((GtkLabel *)message, "<span foreground=\"black\" font_desc=\"FreeSans Semi-Bold 14\">Przegrałeś!!!</span>");
+		gtk_button_set_label((GtkButton *)give_up, "Koniec");fin=1;}
 }
 
 bool lose(){
