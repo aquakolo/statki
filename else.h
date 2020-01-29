@@ -9,3 +9,12 @@ typedef struct{
 	int size;
 	bool dir;
 }shipclass;
+
+typedef struct f{
+	struct f *next, *last;
+	int x, y;
+}cell;
+
+cell *new(int x, int y, cell *last, cell *next);
+void e_remove(cell *now);
+cell *e_find(cell *start,int n);
