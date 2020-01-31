@@ -27,8 +27,8 @@ int livep[9]={0,2,2,3,3,3,4,4,5};
 bool shipfree[9];
 shipclass ships[9];
 int lp=26;
-bool fin;
-const int ay=7, m0=3, o0=18;
+bool finish;
+const int ay=7, m0=3, o0=19;
 
 void on_fin_clicked(){
 	gtk_stack_set_visible_child_name(menu,"boards_game");
@@ -127,15 +127,15 @@ void fill_boards(){
 			gtk_grid_attach((GtkGrid *)board,(GtkWidget *)but,j+o0,i+ay,1,1);
 		}
 	}
-	int temp[9]={0,2,2,3,3,3,4,4,5}
+	int temp[9]={0,2,2,3,3,3,4,4,5};
 	for(int c=0;c<9;c++)livep[c]=temp[c];
 	hmships=8;
-	lp=26
+	lp=26;
 	start_bot(level, field);
-	fin=0;
+	finish=0;
 }
 void on_shoot_clicked(GtkButton *but){
-	if(fin)return;
+	if(finish)return;
 	int c, d;bool ok=false;
 	for(c=ay;c<ay+10;c++){
 		for(d=o0;d<o0+10;d++){
@@ -159,7 +159,7 @@ void on_shoot_clicked(GtkButton *but){
 		while(gtk_events_pending()) gtk_main_iteration();
 		if(result==0){
 			opturn();
-			if(fin)return;
+			if(finish)return;
 			gtk_label_set_markup((GtkLabel *)message, "<span foreground=\"black\" font_desc=\"FreeSans Semi-Bold 14\">Przeciwnik spudłował!\nTwój ruch.</span>");
 		}
 	}
@@ -184,7 +184,7 @@ void on_shoot_clicked(GtkButton *but){
 	if(hmships==0){
 		gtk_label_set_markup((GtkLabel *)message, "<span foreground=\"black\" font_desc=\"FreeSans Semi-Bold 14\">Wygrałeś!!!</span>");
 		gtk_button_set_label((GtkButton *)give_up, "Koniec");
-		fin=1;
+		finish=1;
 	}
 }
 
@@ -218,11 +218,15 @@ void opturn(){
 		}
 		else{answer(x, y, 0);image=gtk_image_new_from_file("miss.png");}
 		gtk_widget_show(image);
-		gtk_widget_destroy(gtk_grid_get_child_at((GtkGrid *)board, x+m0, y+ay));
+		GtkWidget *n=gtk_grid_get_child_at((GtkGrid *)board, x+m0, y+ay);
+		if(n!=NULL)gtk_widget_destroy(n);
 		gtk_grid_attach((GtkGrid *)board,image, x+m0, y+ay, 1, 1);
 	}while(p!=0 && !lose());
-	if(lose()){gtk_label_set_markup((GtkLabel *)message, "<span foreground=\"black\" font_desc=\"FreeSans Semi-Bold 14\">Przegrałeś!!!</span>");
-		gtk_button_set_label((GtkButton *)give_up, "Koniec");fin=1;}
+	if(lose()){
+		gtk_label_set_markup((GtkLabel *)message, "<span foreground=\"black\" font_desc=\"FreeSans Semi-Bold 14\">Przegrałeś!!!</span>");
+		gtk_button_set_label((GtkButton *)give_up, "Koniec");
+		finish=1;
+	}
 }
 
 bool lose(){
@@ -236,14 +240,14 @@ void pictureadd(int size,int k,int w,int h){
 		GtkWidget *but;
 		for(int c=h;c<h+size;c++){
 			but=gtk_grid_get_child_at((GtkGrid *)board, w, c);
-			gtk_widget_destroy(but);
+			if(but!=NULL)gtk_widget_destroy(but);
 		}
 	}
 	else{
 		GtkWidget *but;
 		for(int c=w;c<w+size;c++){
 			but=gtk_grid_get_child_at((GtkGrid *)board, c, h);
-			gtk_widget_destroy(but);
+			if(but!=NULL)gtk_widget_destroy(but);
 		}
 	}
 	GtkWidget *but=gtk_button_new();

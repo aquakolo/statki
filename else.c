@@ -26,7 +26,8 @@ int find(int lship[],int shipn, bool shipfree[]){
 }
 
 cell *new(int x, int y, cell *last, cell *next){
-	cell *now=malloc(sizeof(cell));
+	cell n;
+	cell *now=malloc(sizeof(n));
 	now->x=x;
 	now->y=y;
 	if(last!=NULL)last->next=now;
@@ -37,12 +38,19 @@ cell *new(int x, int y, cell *last, cell *next){
 }
 
 void e_remove(cell *now){
+	if(now==NULL)return;
 	if(now->last!=NULL)now->last->next=now->next;
-	if(now->last!=NULL)now->next->last=now->last;
+	if(now->next!=NULL)now->next->last=now->last;
 	free(now);
 }
 
 cell *e_find(cell *start,int n){
 	if(n==0 || start==NULL)return start;
 	return e_find(start->next, n-1);
+}
+
+void e_clear(cell *start){
+	if(start==NULL)return;
+	e_clear(start->next);
+	free(start);
 }

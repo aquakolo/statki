@@ -5,19 +5,18 @@ int level;
 int mf[10][10];
 shipclass shipss[9];
 int sssize[9]={0,2,2,3,3,3,4,4,5};
-int freeships[6]={0,0,2,3,2,1};
 int live[9];
 int ip=100;
 cell *start;
-cell *bfs=NULL;
+cell *dfs=NULL;
 cell *moves;
 int board[10][10];
-int sbfs=0;
+int sdfs=0;
+bool ts[10][10];
 
 bool wrong(int x, int y, int size, bool dir){
 	if(!(x < 11-size*dir))return true;
 	if(!(y < 11-size*(dir^1)))return true;
-	if(freeships[size]==0)return true;
 	for(int c=0;c<size;c++){
 		if(mf[y+c*(dir^1)][x+c*dir]!=0)return true;
 	}
@@ -25,7 +24,11 @@ bool wrong(int x, int y, int size, bool dir){
 }
 
 void start_bot(int _level, int _board[][10]){
-	srand(clock());
+	srand(clock());ip=100;
+	e_clear(moves);sdfs=0;
+	e_clear(dfs);dfs=NULL;moves=NULL;start=NULL;
+	e_clear(start);
+	for(int c=0;c<10;c++){for(int d=0;d<10;d++){mf[c][d]=0;ts[c][d]=0;}}
 	level=_level;
 	for(int c=8;c>=1;c--){
 		int x, y, size=sssize[c];
@@ -38,7 +41,6 @@ void start_bot(int _level, int _board[][10]){
 		for(int d=0;d<size;d++){
 			mf[y+d*(dir^1)][x+d*dir]=c;
 		}
-		freeships[size]--;
 		shipss[c].y='A'+y;
 		shipss[c].x=x;
 		shipss[c].size=size;
@@ -87,7 +89,7 @@ int turn(){
 		return y*10+x;
 	}
 	if(level==2){
-		if(bfs==NULL){
+		if(dfs==NULL){
 			int x, y;
 			cell *r;
 			do{
@@ -100,11 +102,11 @@ int turn(){
 			return y*10+x;
 		}
 		else{
-			cell *r=bfs;
+			cell *r=dfs;
 			int x=r->x, y=r->y;
-			bfs=bfs->next;
+			dfs=dfs->next;
 			e_remove(r);
-			sbfs--;
+			sdfs--;
 			return y*10+x;
 		}
 	}
@@ -128,25 +130,25 @@ void answer(int x, int y, int ans){
 		}
 	}
 	if(level==2 && ans>0){
-		if(x>0 && board[y][x-1]==0){
-			if(bfs==NULL)bfs=new(x-1, y, NULL, NULL);
-			else new(x-1, y, e_find(bfs, sbfs-1), NULL);
-			sbfs++;
+		if(x>0 && board[y][x-1]==0 && !ts[y][x-1]){
+			dfs=new(x-1, y, NULL, dfs);
+			ts[y][x-1]=1;
+			sdfs++;
 		}
-		if(y>0 && board[y-1][x]==0){
-			if(bfs==NULL)bfs=new(x, y-1, NULL, NULL);
-			else new(x, y-1, e_find(bfs, sbfs-1), NULL);
-			sbfs++;
+		if(y>0 && board[y-1][x]==0 && !ts[y-1][x]){
+			dfs=new(x, y-1, NULL, dfs);
+			ts[y-1][x]=1;
+			sdfs++;
 		}
-		if(x<9 && board[y][x+1]==0){
-			if(bfs==NULL)bfs=new(x+1, y, NULL, NULL);
-			else new(x+1, y, e_find(bfs, sbfs-1), NULL);
-			sbfs++;
+		if(x<9 && board[y][x+1]==0 && !ts[y][x+1]){
+			dfs=new(x+1, y, NULL, dfs);
+			ts[y][x+1]=1;
+			sdfs++;
 		}
-		if(y<9 && board[y+1][x]==0){
-			if(bfs==NULL)bfs=new(x, y+1, NULL, NULL);
-			else new(x, y+1, e_find(bfs, sbfs-1), NULL);
-			sbfs++;
+		if(y<9 && board[y+1][x]==0 && !ts[y+1][x]){
+			dfs=new(x, y+1, NULL, dfs);
+			ts[y+1][x]=1;
+			sdfs++;
 		}
 	}
 }

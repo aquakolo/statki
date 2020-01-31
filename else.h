@@ -18,3 +18,4 @@ typedef struct f{
 cell *new(int x, int y, cell *last, cell *next);
 void e_remove(cell *now);
 cell *e_find(cell *start,int n);
+void e_clear(cell *start);
