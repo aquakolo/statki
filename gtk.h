@@ -33,3 +33,4 @@ void on_give_up_clicked();
 void on_shoot_clicked(GtkButton *but);
 void opturn();
 bool lose();
+void on_ng_but2_clicked();

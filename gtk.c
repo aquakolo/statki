@@ -8,10 +8,11 @@
 #include"gtk.h"
 #include"bot.h"
 
-GtkWidget *window1, *board, *buttonres, *fin, *message, *give_up;
+GtkWidget *window1, *board, *buttonres, *fin, *message, *give_up, *m_board, *o_board;
 GtkStack *menu;
 GtkBuilder *builder;
 GtkWidget *shipchoice[4][2];
+GtkWidget *mboard[10][10], *oboard[10][10];
 
 bool set=0;
 int level;
@@ -50,6 +51,9 @@ void on_mm_but3_clicked(){
 void on_ng_but1_clicked(){
 	gtk_stack_set_visible_child_name(menu,"level");
 }
+void on_ng_but2_clicked(){
+	gtk_stack_set_visible_child_name(menu,"login");
+}
 void on_lm_back_clicked(){
 	gtk_stack_set_visible_child_name(menu,"newgame");
 }
@@ -59,48 +63,52 @@ void on_give_up_clicked(){
 
 void set_boards(){
 	board =GTK_WIDGET(gtk_builder_get_object(builder,"boards_game"));
+	m_board =GTK_WIDGET(gtk_builder_get_object(builder,"m_board"));
+	o_board =GTK_WIDGET(gtk_builder_get_object(builder,"o_board"));
 	GtkWidget *text;
 	for(int c=0;c<10;c++){
 		char t[]="<span foreground=\"black\" font_desc=\"FreeSans Semi-Bold 11\">A</span>";t[59]+=c;
 		text=gtk_label_new(NULL);
 		gtk_label_set_markup (GTK_LABEL(text), t);
 		gtk_widget_show(text);
-		gtk_grid_attach((GtkGrid *)board,text,m0-1,ay+c,1,1);
+		gtk_grid_attach((GtkGrid *)m_board,text,0,c+1,1,1);
 	}
 	for(int c=0;c<10;c++){
 		char t[]="<span foreground=\"black\" font_desc=\"FreeSans Semi-Bold 11\">0</span>";t[59]+=c;
 		text=gtk_label_new(NULL);
 		gtk_label_set_markup (GTK_LABEL(text), t);
 		gtk_widget_show(text);
-		gtk_grid_attach((GtkGrid *)board,text,m0+c,ay-1,1,1);
+		gtk_grid_attach((GtkGrid *)m_board,text,c+1,0,1,1);
 	}
 	for(int c=0;c<10;c++){
 		char t[]="<span foreground=\"black\" font_desc=\"FreeSans Semi-Bold 11\">A</span>";t[59]+=c;
 		text=gtk_label_new(NULL);
 		gtk_label_set_markup (GTK_LABEL(text), t);
 		gtk_widget_show(text);
-		gtk_grid_attach((GtkGrid *)board,text,o0-1,ay+c,1,1);
+		gtk_grid_attach((GtkGrid *)o_board,text,0,c+1,1,1);
 	}
 	for(int c=0;c<10;c++){
 		char t[]="<span foreground=\"black\" font_desc=\"FreeSans Semi-Bold 11\">0</span>";t[59]+=c;
 		text=gtk_label_new(NULL);
 		gtk_label_set_markup (GTK_LABEL(text), t);
 		gtk_widget_show(text);
-		gtk_grid_attach((GtkGrid *)board,text,o0+c,ay-1,1,1);
+		gtk_grid_attach((GtkGrid *)o_board,text,c+1,0,1,1);
 	}
 	set=1;
 }
 
 void fill_boards(){
+	gtk_label_set_markup((GtkLabel *)message, "<span foreground=\"black\" font_desc=\"FreeSans Semi-Bold 14\">Twój ruch.</span>");
 	GtkWidget *see;
 	for(int c=0;c<10;c++){
 		for(int d=0;d<10;d++){
-			see=gtk_grid_get_child_at((GtkGrid *)board,m0+d,ay+c);
+			see=mboard[c][d];
 			if(see!=NULL)gtk_widget_destroy(see);
 			if(field[c][d]==0){
 				see=gtk_image_new_from_file("see.png");
 				gtk_widget_show(see);
-				gtk_grid_attach((GtkGrid *)board,see,m0+d,ay+c,1,1);
+				gtk_grid_attach((GtkGrid *)m_board,see,d+1,c+1,1,1);
+				mboard[c][d]=see;
 			}
 			else{
 				int p=field[c][d];
@@ -111,21 +119,23 @@ void fill_boards(){
 				else if(c<9 && field[c+1][d]==p)see=gtk_image_new_from_file("gl.png");
 				else if(c>0 && field[c-1][d]==p)see=gtk_image_new_from_file("dl.png");
 				gtk_widget_show(see);
-				gtk_grid_attach((GtkGrid *)board,see,m0+d,ay+c,1,1);
+				gtk_grid_attach((GtkGrid *)m_board,see,d+1,c+1,1,1);
+				mboard[c][d]=see;
 			}
 		}
 	}
 
-	for(char i=0;i<=9;i++){
-		for(char j=0;j<=9;j++){
-			see=gtk_grid_get_child_at((GtkGrid *)board,o0+j,ay+i);
+	for(int i=0;i<=9;i++){
+		for(int j=0;j<=9;j++){
+			see=oboard[i][j];
 			if(see!=NULL)gtk_widget_destroy(see);
 			GtkWidget *but=gtk_button_new();
 			GtkWidget *image=gtk_image_new_from_file("dot.png");
 			gtk_button_set_image ((GtkButton *)but,image);
 			g_signal_connect (G_OBJECT(but), "clicked", G_CALLBACK(on_shoot_clicked), NULL);
 			gtk_widget_show(but);
-			gtk_grid_attach((GtkGrid *)board,(GtkWidget *)but,j+o0,i+ay,1,1);
+			gtk_grid_attach((GtkGrid *)o_board,but,j+1,i+1,1,1);
+			oboard[i][j]=but;
 		}
 	}
 	int temp[9]={0,2,2,3,3,3,4,4,5};
@@ -140,7 +150,7 @@ void on_shoot_clicked(GtkButton *but){
 	int c, d;bool ok=false;
 	for(c=ay;c<ay+10;c++){
 		for(d=o0;d<o0+10;d++){
-			if((GtkWidget *)but==gtk_grid_get_child_at((GtkGrid *)board, d, c)){
+			if((GtkWidget *)but==oboard[c-ay][d-o0]){
 				ok=true;
 				break;
 			}
@@ -154,7 +164,8 @@ void on_shoot_clicked(GtkButton *but){
 		if(result==0)image=gtk_image_new_from_file("see.png");
 		if(result==1)image=gtk_image_new_from_file("hit.png");
 		gtk_widget_show(image);
-		gtk_grid_attach((GtkGrid *)board,(GtkWidget *)image,d,c,1,1);
+		gtk_grid_attach((GtkGrid *)o_board,image,d-o0+1,c-ay+1,1,1);
+		oboard[c-ay][d-o0]=image;
 		if(result==0)gtk_label_set_markup((GtkLabel *)message, "<span foreground=\"black\" font_desc=\"FreeSans Semi-Bold 14\">Pudło!\nRuch przeciwnika.</span>");
 		if(result==1)gtk_label_set_markup((GtkLabel *)message, "<span foreground=\"black\" font_desc=\"FreeSans Semi-Bold 14\">Trafiony!\nTwój ruch.</span>");
 		while(gtk_events_pending()) gtk_main_iteration();
@@ -173,13 +184,14 @@ void on_shoot_clicked(GtkButton *but){
 		x=result;
 		GtkWidget *was;
 		for(int c=0;c<size;c++){
-			was=gtk_grid_get_child_at((GtkGrid *)board,o0+x+c*dir, ay+y+c*(dir^1));
+			was=oboard[y+c*(dir^1)][x+c*dir];
 			if(was!=NULL)gtk_widget_destroy(was);
 		}
 		char t[]="s0pod.png";t[1]+=size;if(dir==0){t[3]='i';}
 		GtkWidget *image=gtk_image_new_from_file(t);
 		gtk_widget_show(image);
-		gtk_grid_attach((GtkGrid *)board, image, x+o0, y+ay, 1+(size-1)*dir, 1+(size-1)*(dir^1));
+		gtk_grid_attach((GtkGrid *)o_board, image, x+1, y+1, 1+(size-1)*dir, 1+(size-1)*(dir^1));
+		oboard[y][x]=image;
 		hmships--;
 	}
 	if(hmships==0){
@@ -193,7 +205,7 @@ void opturn(){
 	int opshoot,x,y,p;
 	GtkWidget *image;
 	do{
-		while(gtk_events_pending()) gtk_main_iteration();
+		while(gtk_events_pending()) gtk_main_iteration(); 
 		sleep(1);
 		opshoot=turn();
 		x=opshoot%10;
@@ -207,7 +219,7 @@ void opturn(){
 				gtk_label_set_markup((GtkLabel *)message, "<span foreground=\"black\" font_desc=\"FreeSans Semi-Bold 14\">Zostałeś trafiony!\nRuch przeciwnika.</span>");
 			}
 			else{
-				answer(ships[p].x, ships[p].y, (int)(ships[p].dir)*10+ships[p].size);
+				answer(ships[p].x, ships[p].y-'A', (int)(ships[p].dir)*10+ships[p].size);
 				gtk_label_set_markup((GtkLabel *)message, "<span foreground=\"black\" font_desc=\"FreeSans Semi-Bold 14\">Zostałeś zniszczony!\nRuch przeciwnika.</span>");
 			}
 			if(x>0 && field[y][x-1]==p && x<9 && field[y][x+1]==p)image=gtk_image_new_from_file("sd.png");
@@ -219,9 +231,9 @@ void opturn(){
 		}
 		else{answer(x, y, 0);image=gtk_image_new_from_file("miss.png");}
 		gtk_widget_show(image);
-		GtkWidget *n=gtk_grid_get_child_at((GtkGrid *)board, x+m0, y+ay);
-		if(n!=NULL)gtk_widget_destroy(n);
-		gtk_grid_attach((GtkGrid *)board,image, x+m0, y+ay, 1, 1);
+		if(mboard[y][x]!=NULL)gtk_widget_destroy(mboard[y][x]);
+		gtk_grid_attach((GtkGrid *)m_board,image, x+1, y+1, 1, 1);
+		mboard[y][x]=image;
 	}while(p!=0 && !lose());
 	if(lose()){
 		gtk_label_set_markup((GtkLabel *)message, "<span foreground=\"black\" font_desc=\"FreeSans Semi-Bold 14\">Przegrałeś!!!</span>");
@@ -373,23 +385,23 @@ void on_space_clicked(GtkButton *button){
 		}
 		if(ok)break;
 	}
-	if(good(c, d, shipn, shipk, field) && ship[shipn-1]!=0)
+	if(good(c, d, shipn, shipk, field) && ship[shipn-1]!=0){
 		add(d, c);
-	else if(good2(c,d, field))
+	}else if(good2(c,d, field)){
 		rem(field[c][d], button);
-}
+	}}
 void gtk_on(){
 	gtk_init(NULL, NULL);
 	builder=gtk_builder_new_from_file("client.glade");
+	window1 = GTK_WIDGET(gtk_builder_get_object(builder,"window1"));	
+	menu = GTK_STACK(gtk_builder_get_object(builder,"menu"));			
+	fin = GTK_WIDGET(gtk_builder_get_object(builder,"fin"));			
+	message = GTK_WIDGET(gtk_builder_get_object(builder,"message"));	
+	give_up = GTK_WIDGET(gtk_builder_get_object(builder,"give_up"));	
 	
-	window1 = GTK_WIDGET(gtk_builder_get_object(builder,"window1"));
-	menu = GTK_STACK(gtk_builder_get_object(builder,"menu"));
-	fin = GTK_WIDGET(gtk_builder_get_object(builder,"fin"));
-	message = GTK_WIDGET(gtk_builder_get_object(builder,"message"));
-	give_up = GTK_WIDGET(gtk_builder_get_object(builder,"give_up"));
 	g_signal_connect (G_OBJECT(window1), "destroy", G_CALLBACK(gtk_main_quit), NULL);
-	
 	board =GTK_WIDGET(gtk_builder_get_object(builder,"board"));
+	
 	for(char i='A';i<='J';i++){
 		for(char j='0';j<='9';j++){
 			char t[3]={i,j,'\0'};
@@ -399,11 +411,11 @@ void gtk_on(){
 			gtk_grid_attach((GtkGrid *)board,(GtkWidget *)but,j-'0',i-'A',1,1);
 		}
 	}
-	g_signal_connect (G_OBJECT(buttonres), "clicked", G_CALLBACK(on_space_clicked), NULL);
+	
 	shipch(shipchoice, builder);
-
+	
 	gtk_builder_connect_signals(builder, NULL);
-
+	
 	gtk_widget_show_all(window1);
 	
 	gtk_main();

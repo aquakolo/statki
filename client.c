@@ -10,7 +10,8 @@ int main(int argc, char *argv[]){
 	if(argc>=2){
 		if(argv[1][0]=='-' && argv[1][1]=='t'){/*text_on();*/}
 	}
-	else 
+	else{
 		gtk_on();
+	}
 	return 0;
 }
