@@ -26,8 +26,7 @@ int find(int lship[],int shipn, bool shipfree[]){
 }
 
 cell *new(int x, int y, cell *last, cell *next){
-	cell n;
-	cell *now=malloc(sizeof(n));
+	cell *now=malloc(sizeof(cell));
 	now->x=x;
 	now->y=y;
 	if(last!=NULL)last->next=now;

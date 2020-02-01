@@ -88,6 +88,7 @@ void set_boards(){
 		gtk_widget_show(text);
 		gtk_grid_attach((GtkGrid *)board,text,o0+c,ay-1,1,1);
 	}
+	set=1;
 }
 
 void fill_boards(){

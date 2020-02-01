@@ -1,6 +1,7 @@
 #include"else.h"
 #include<time.h>
 #include<stdlib.h>
+
 int level;
 int mf[10][10];
 shipclass shipss[9];
