@@ -868,6 +868,8 @@ Napisany w C z użyciem GTK+, Glade,
                 <property name="can_focus">False</property>
                 <property name="row_spacing">1</property>
                 <property name="column_spacing">1</property>
+                <property name="row_homogeneous">True</property>
+                <property name="column_homogeneous">True</property>
                 <child>
                   <placeholder/>
                 </child>
@@ -1245,6 +1247,8 @@ Napisany w C z użyciem GTK+, Glade,
                 <property name="can_focus">False</property>
                 <property name="row_spacing">1</property>
                 <property name="column_spacing">1</property>
+                <property name="row_homogeneous">True</property>
+                <property name="column_homogeneous">True</property>
                 <child>
                   <placeholder/>
                 </child>
@@ -2319,6 +2323,9 @@ Napisany w C z użyciem GTK+, Glade,
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Podaj port:</property>
+                <attributes>
+                  <attribute name="font-desc" value="FreeSans 13"/>
+                </attributes>
               </object>
               <packing>
                 <property name="x">40</property>
@@ -2347,6 +2354,48 @@ Napisany w C z użyciem GTK+, Glade,
               <packing>
                 <property name="x">340</property>
                 <property name="y">55</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="list">
+                <property name="can_focus">False</property>
+                <property name="no_show_all">True</property>
+                <property name="label" translatable="yes">Ilość zajętych miejsc w pokoju:</property>
+                <attributes>
+                  <attribute name="font-desc" value="FreeSans 13"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="x">30</property>
+                <property name="y">100</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="refresh">
+                <property name="label">gtk-refresh</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="no_show_all">True</property>
+                <property name="use_stock">True</property>
+                <property name="always_show_image">True</property>
+              </object>
+              <packing>
+                <property name="x">340</property>
+                <property name="y">100</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton">
+                <property name="label" translatable="yes">Dołącz</property>
+                <property name="name">join</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="no_show_all">True</property>
+                <property name="always_show_image">True</property>
+              </object>
+              <packing>
+                <property name="x">340</property>
+                <property name="y">150</property>
               </packing>
             </child>
           </object>

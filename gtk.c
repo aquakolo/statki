@@ -13,6 +13,7 @@ GtkStack *menu;
 GtkBuilder *builder;
 GtkWidget *shipchoice[4][2];
 GtkWidget *mboard[10][10], *oboard[10][10];
+bool multi=0;
 
 bool set=0;
 int level;
@@ -29,6 +30,7 @@ bool shipfree[9];
 shipclass ships[9];
 int lp=26;
 bool finish;
+bool rp=0;
 const int ay=7, m0=3, o0=19;
 
 void on_fin_clicked(){
@@ -147,6 +149,7 @@ void fill_boards(){
 }
 void on_shoot_clicked(GtkButton *but){
 	if(finish)return;
+	if(rp)return;
 	int c, d;bool ok=false;
 	for(c=ay;c<ay+10;c++){
 		for(d=o0;d<o0+10;d++){
@@ -157,7 +160,7 @@ void on_shoot_clicked(GtkButton *but){
 		}
 		if(ok)break;
 	}
-	int result=shoot(d-o0, c-ay);
+	int result=(!multi?shoot(d-o0, c-ay):sends(d-o0, c-ay));
 	gtk_widget_destroy((GtkWidget *)but);
 	if(result<2){
 		GtkWidget *image;
@@ -170,7 +173,9 @@ void on_shoot_clicked(GtkButton *but){
 		if(result==1)gtk_label_set_markup((GtkLabel *)message, "<span foreground=\"black\" font_desc=\"FreeSans Semi-Bold 14\">Trafiony!\nTwój ruch.</span>");
 		while(gtk_events_pending()) gtk_main_iteration();
 		if(result==0){
+			rp=1;
 			opturn();
+			rp=0;
 			if(finish)return;
 			gtk_label_set_markup((GtkLabel *)message, "<span foreground=\"black\" font_desc=\"FreeSans Semi-Bold 14\">Przeciwnik spudłował!\nTwój ruch.</span>");
 		}
@@ -206,8 +211,7 @@ void opturn(){
 	GtkWidget *image;
 	do{
 		while(gtk_events_pending()) gtk_main_iteration(); 
-		sleep(1);
-		opshoot=turn();
+		opshoot=(!multi?turn():ans());
 		x=opshoot%10;
 		y=opshoot/10;
 		p=field[y][x];
@@ -215,11 +219,11 @@ void opturn(){
 			livep[p]--;
 			lp--;
 			if(livep[p]!=0){
-				answer(x, y, 1);
+				if(!multi)answer(x, y, 1);
 				gtk_label_set_markup((GtkLabel *)message, "<span foreground=\"black\" font_desc=\"FreeSans Semi-Bold 14\">Zostałeś trafiony!\nRuch przeciwnika.</span>");
 			}
 			else{
-				answer(ships[p].x, ships[p].y-'A', (int)(ships[p].dir)*10+ships[p].size);
+				if(!multi)answer(ships[p].x, ships[p].y-'A', (int)(ships[p].dir)*10+ships[p].size);
 				gtk_label_set_markup((GtkLabel *)message, "<span foreground=\"black\" font_desc=\"FreeSans Semi-Bold 14\">Zostałeś zniszczony!\nRuch przeciwnika.</span>");
 			}
 			if(x>0 && field[y][x-1]==p && x<9 && field[y][x+1]==p)image=gtk_image_new_from_file("sd.png");
@@ -229,7 +233,7 @@ void opturn(){
 			else if(y<9 && field[y+1][x]==p)image=gtk_image_new_from_file("gd.png");
 			else if(y>0 && field[y-1][x]==p)image=gtk_image_new_from_file("dd.png");
 		}
-		else{answer(x, y, 0);image=gtk_image_new_from_file("miss.png");}
+		else{if(!multi)answer(x, y, 0);image=gtk_image_new_from_file("miss.png");}
 		gtk_widget_show(image);
 		if(mboard[y][x]!=NULL)gtk_widget_destroy(mboard[y][x]);
 		gtk_grid_attach((GtkGrid *)m_board,image, x+1, y+1, 1, 1);
@@ -356,14 +360,17 @@ void on_ng_ent1_changed(GtkEntry* entry){
 }
 void on_lm_easy_clicked(){
 	level=1;
+	multi=0;
 	gtk_stack_set_visible_child_name(menu,"board");
 }
 void on_lm_nor_clicked(){
 	level=2;
+	multi=0;
 	gtk_stack_set_visible_child_name(menu,"board");
 }
 void on_lm_cheat_clicked(){
 	level=3;
+	multi=0;
 	gtk_stack_set_visible_child_name(menu,"board");
 }
 
@@ -389,7 +396,8 @@ void on_space_clicked(GtkButton *button){
 		add(d, c);
 	}else if(good2(c,d, field)){
 		rem(field[c][d], button);
-	}}
+	}
+}
 void gtk_on(){
 	gtk_init(NULL, NULL);
 	builder=gtk_builder_new_from_file("client.glade");

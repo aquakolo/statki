@@ -83,6 +83,7 @@ int shoot(int x, int y){
 }
 
 int turn(){
+	sleep(0.5);
 	if(level==1){
 		int s=rand()%ip, temp, y, x;
 		ip--;

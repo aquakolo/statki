@@ -25,16 +25,20 @@ bool setsocket(int PORT){
     return 1;
 }
 
-void sends(int x, int y){
-	char mess[]="A0\0";mess[1]+=x;mess[0]+=y;
+int sends(int x, int y){
+	char mess[]="00\0";mess[1]+=x;mess[0]+=y;
 	send(server_socket,mess,3,0);
+    int res=ans();
+    return res;
 }
 
 int ans(){
 	char answ[5];
 	read(server_socket,answ,5);
-	int res=answ[0]-'0'+(answ[1]-'0')*10+(answ[2]-'0')*100+(answ[3]-'0')*10;
+	int res=answ[0]-'0'+(answ[1]-'0')*10+(answ[2]-'0')*100+(answ[3]-'0')*1000;//x, y, size, dir
 }
+
+
 void close_s(){
 	close(server_socket);
 }
