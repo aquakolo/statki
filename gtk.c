@@ -7,14 +7,15 @@
 #include<gtk/gtkx.h>
 #include"gtk.h"
 #include"bot.h"
+#include"socket.h"
 
-GtkWidget *window1, *board, *buttonres, *fin, *message, *give_up, *m_board, *o_board;
+GtkWidget *window1, *board, *buttonres, *fin, *message, *give_up, *m_board, *o_board, *info, *refresh, *join;
 GtkStack *menu;
 GtkBuilder *builder;
 GtkWidget *shipchoice[4][2];
 GtkWidget *mboard[10][10], *oboard[10][10];
 bool multi=0;
-
+bool ot=0;
 bool set=0;
 int level;
 int ship[4]={2,3,2,1};
@@ -29,6 +30,7 @@ int livep[9]={0,2,2,3,3,3,4,4,5};
 bool shipfree[9];
 shipclass ships[9];
 int lp=26;
+int port;
 bool finish;
 bool rp=0;
 const int ay=7, m0=3, o0=19;
@@ -37,6 +39,18 @@ void on_fin_clicked(){
 	gtk_stack_set_visible_child_name(menu,"boards_game");
 	if(!set)set_boards();
 	fill_boards();
+	if(multi){
+		send_ships(ships);
+	}
+	if(ot){
+		while(gtk_events_pending()) gtk_main_iteration();
+		gtk_label_set_markup((GtkLabel *)message, "<span foreground=\"black\" font_desc=\"FreeSans Semi-Bold 14\">Ruch przeciwnika.</span>");
+		rp=1;
+		opturn();
+		rp=0;
+		if(finish)return;
+		gtk_label_set_markup((GtkLabel *)message, "<span foreground=\"black\" font_desc=\"FreeSans Semi-Bold 14\">Przeciwnik spudłował!\nTwój ruch.</span>");
+	}
 }
 void on_mm_but1_clicked(){
 	gtk_stack_set_visible_child_name(menu,"newgame");
@@ -54,6 +68,7 @@ void on_ng_but1_clicked(){
 	gtk_stack_set_visible_child_name(menu,"level");
 }
 void on_ng_but2_clicked(){
+	multi=1;
 	gtk_stack_set_visible_child_name(menu,"login");
 }
 void on_lm_back_clicked(){
@@ -62,6 +77,12 @@ void on_lm_back_clicked(){
 void on_give_up_clicked(){
 	on_backtomenu_clicked();
 }
+void back_login(){
+	if(socket_e())close_s();
+	multi=0;
+	gtk_stack_set_visible_child_name(menu,"newgame");
+}
+
 
 void set_boards(){
 	board =GTK_WIDGET(gtk_builder_get_object(builder,"boards_game"));
@@ -356,8 +377,52 @@ void shipch(){
 }
 
 void on_ng_ent1_changed(GtkEntry* entry){
-	sprintf(pname,"entry=%s",gtk_entry_get_text(entry));
+	sprintf(pname,"%s",gtk_entry_get_text(entry));
 }
+
+void port_changed(GtkEntry* entry){
+	char portt[8];
+	sprintf(portt,"%s",gtk_entry_get_text(entry));
+	port=atoi(portt);
+}
+
+void connect_clicked(){
+	if(socket_e())close_s();
+	if(setsocket(port)){
+		send_name(pname);
+		gtk_widget_show(info);
+		gtk_widget_show(refresh);
+		refresh_clicked();
+	}
+}
+void refresh_clicked(){
+	int s=slist();
+	char buff[]="<span foreground=\"black\" font_desc=\"FreeSans Semi-Bold 13\">Ilość zajętych miejsc w pokoju: 0/2";
+	buff[95]+=s;
+	for(int c=0;c<s;c++){
+		strcat(buff, "\n");
+		strcat(buff, names());
+	}
+	strcat(buff, "</span>");
+	gtk_label_set_markup((GtkLabel *)info, buff);
+	if(s<2){
+		gtk_widget_show(join);
+	}
+}
+
+void join_clicked(){
+	int ok=sendjoin();
+	if(ok==0){refresh_clicked();return;}
+	if(ok==1){
+		ot=0;
+		gtk_label_set_markup((GtkLabel *)info, "<span foreground=\"black\" font_desc=\"FreeSans Semi-Bold 13\">Czekanie na przeciwnika!</span>");
+		while(gtk_events_pending()) gtk_main_iteration();
+		wait();
+	}
+	else{ot=1;}
+	gtk_stack_set_visible_child_name(menu,"board");
+}
+
 void on_lm_easy_clicked(){
 	level=1;
 	multi=0;
@@ -405,7 +470,10 @@ void gtk_on(){
 	menu = GTK_STACK(gtk_builder_get_object(builder,"menu"));			
 	fin = GTK_WIDGET(gtk_builder_get_object(builder,"fin"));			
 	message = GTK_WIDGET(gtk_builder_get_object(builder,"message"));	
-	give_up = GTK_WIDGET(gtk_builder_get_object(builder,"give_up"));	
+	give_up = GTK_WIDGET(gtk_builder_get_object(builder,"give_up"));
+	info = GTK_WIDGET(gtk_builder_get_object(builder,"info"));
+	refresh = GTK_WIDGET(gtk_builder_get_object(builder,"refresh"));
+	join = GTK_WIDGET(gtk_builder_get_object(builder,"join"));
 	
 	g_signal_connect (G_OBJECT(window1), "destroy", G_CALLBACK(gtk_main_quit), NULL);
 	board =GTK_WIDGET(gtk_builder_get_object(builder,"board"));

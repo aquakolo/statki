@@ -1,4 +1,3 @@
-#include"else.h"
 void start_bot(int _level, int _board[][10]);
 int shoot(int x, int y);
 int turn();

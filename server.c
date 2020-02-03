@@ -2,6 +2,7 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <sys/time.h>
+#include <unistd.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,8 +25,9 @@ typedef struct{
 	int ils;
 }board;
 
-int server_socket, client_socket[max_clients], new_sock, sd, sockn; 
-int max_clients=30;
+const int max_clients=30;
+int server_socket, new_sock, sd, sockn; 
+int client_socket[30];
 
 struct sockaddr_in serv_address;
 int serv_addr_len;
@@ -53,27 +55,27 @@ void move(int player){
 		int x=move[0]-'0';
 		int y=move[1]-'0';
 		send(client_socket[inroom[opponent]], move, 3, 0);
-		int w=p[opponent].field[y][x]
+		int w=p[opponent]->field[y][x];
 		if(w==0){
-			send(client_socket[inroom[player]], "0000\n", 5, 0);
+			send(client_socket[inroom[player]], "0000\0", 5, 0);
 		}
-		else if(w!=0 && p[opponent].size[w]>1){
-			p[opponent].size[p[opponent].field[y][x]]--;
-			send(client_socket[inroom[player]], "1000\n", 5, 0);
+		else if(w!=0 && p[opponent]->size[w]>1){
+			p[opponent]->size[p[opponent]->field[y][x]]--;
+			send(client_socket[inroom[player]], "1000\0", 5, 0);
 		}
 		else{
-			p[opponent].size[w]--;
-			char odp[5]="0000\n";
-			odp[0]+=p[opponent].shipn[w].x;
-			odp[1]+=p[opponent].shipn[w].y;
-			odp[2]+=p[opponent].shipn[w].size;
-			odp[3]+=p[opponent].shipn[w].dir;
-			p[opponent].ils--;
+			p[opponent]->size[w]--;
+			char odp[5]="0000\0";
+			odp[0]+=p[opponent]->shipn[w].x;
+			odp[1]+=p[opponent]->shipn[w].y;
+			odp[2]+=p[opponent]->shipn[w].size;
+			odp[3]+=p[opponent]->shipn[w].dir;
+			p[opponent]->ils--;
 			send(client_socket[inroom[player]], odp, 5, 0);
 		}
 		turn=opponent;
 	}
-	if(p[opponent].ils==0){
+	if(p[opponent]->ils==0){
 		free(p[0]);
 		free(p[1]);
 		inroom[0]=-1;
@@ -84,44 +86,46 @@ void move(int player){
 
 }
 void addtoroom(int who){
-	if(inroom[0]==-1)inroom[0]=who;
+	if(inroom[0]==-1){inroom[0]=who;send(client_socket[who], "1\0", 2, 0);}
 	else{
+		send(client_socket[inroom[0]], "1\n", 2, 0);
 		inroom[1]=who;
 		room_started=1;
+		send(client_socket[who], "2\0", 2, 0);
 	}
 }
 void room1(){
 	if(p[0]==NULL && FD_ISSET(client_socket[inroom[0]], &readfds)){
-		p[0]=malloc(board);
+		p[0]=malloc(sizeof(board));
 		char shipo[33];
 		read(client_socket[inroom[0]], shipo, 33);
 		for(int c=1;c<=8;c++){
-			p[0].shipn[c].x=shipo[(c-1)*4+0]-'0';
-			p[0].shipn[c].y=shipo[(c-1)*4+1]-'0';
-			p[0].shipn[c].size=shipo[(c-1)*4+2]-'0';
-			p[0].shipn[c].dir=shipo[(c-1)*4+3]-'0';
-			p[0].size[c]=shipo[(c-1)*4+2]-'0';
-			for(int d=0;d<p[0].shipn[c].size;d++){
-				field[p[0].shipn[c].y+d*(p[0].shipn[c].dir^1)][p[0].shipn[c].x+d*p[0].shipn[c].dir]=c;
+			p[0]->shipn[c].x=shipo[(c-1)*4+0]-'0';
+			p[0]->shipn[c].y=shipo[(c-1)*4+1]-'0';
+			p[0]->shipn[c].size=shipo[(c-1)*4+2]-'0';
+			p[0]->shipn[c].dir=shipo[(c-1)*4+3]-'0';
+			p[0]->size[c]=shipo[(c-1)*4+2]-'0';
+			for(int d=0;d<p[0]->shipn[c].size;d++){
+				p[0]->field[p[0]->shipn[c].y+d*(p[0]->shipn[c].dir^1)][p[0]->shipn[c].x+d*p[0]->shipn[c].dir]=c;
 			}
 		}
-		p[0].ils=8;
+		p[0]->ils=8;
 	}
 	if(p[1]==NULL && FD_ISSET(client_socket[inroom[1]], &readfds)){
-		p[1]=malloc(board);
+		p[1]=malloc(sizeof(board));
 		char shipo[33];
-		read(client_socket[inroom[1]], shipo, 33, 0);
+		read(client_socket[inroom[1]], shipo, 33);
 		for(int c=1;c<=8;c++){	
-			p[1].shipn[c].x=shipo[(c-1)*4+0]-'0';
-			p[1].shipn[c].y=shipo[(c-1)*4+1]-'0';
-			p[1].shipn[c].size=shipo[(c-1)*4+2]-'0';
-			p[1].shipn[c].dir=shipo[(c-1)*4+3]-'0';
-			p[1].size[c]=shipo[(c-1)*4+2]-'0';
-			for(int d=0;d<p[1].shipn[c].size;d++){
-				field[p[1].shipn[c].y+d*(p[1].shipn[c].dir^1)][p[1].shipn[c].x+d*p[1].shipn[c].dir]=c;
+			p[1]->shipn[c].x=shipo[(c-1)*4+0]-'0';
+			p[1]->shipn[c].y=shipo[(c-1)*4+1]-'0';
+			p[1]->shipn[c].size=shipo[(c-1)*4+2]-'0';
+			p[1]->shipn[c].dir=shipo[(c-1)*4+3]-'0';
+			p[1]->size[c]=shipo[(c-1)*4+2]-'0';
+			for(int d=0;d<p[1]->shipn[c].size;d++){
+				p[1]->field[p[1]->shipn[c].y+d*(p[1]->shipn[c].dir^1)][p[1]->shipn[c].x+d*p[1]->shipn[c].dir]=c;
 			}
 		}
-		p[1].ils=8;
+		p[1]->ils=8;
 	}
 	if(p[0]!=NULL && p[1]!=NULL){
 		move(turn);
@@ -136,7 +140,7 @@ bool notinroom(int who){
 
 void send_list(int who){
 	int w=(room_started?2:0);
-	if(w==0 inroom[0]!=-1)w=1;
+	if(w==0 && inroom[0]!=-1)w=1;
 	char mess[2]="0\n";mess[0]+=w;
 	send(client_socket[who],mess, 2, 0);
 	for(int c=0;c<w;c++){
@@ -157,7 +161,7 @@ int main(int argc, char *argv[]){
 
 	server_socket = socket(AF_INET, SOCK_STREAM, 0);
 	if(server_socket == 0){
-		perror("socket failed"); 
+		perror("socket failed\n"); 
 		return 0;
 	}
 
@@ -167,12 +171,12 @@ int main(int argc, char *argv[]){
 	serv_addr_len=sizeof(serv_address);
 
 	if(bind(server_socket,(struct sockaddr *)&serv_address,serv_addr_len)<0){ 
-		perror("bind failed"); 
+		perror("bind failed\n"); 
 		return 0; 
 	}
 
 	if(listen(server_socket, 3) < 0){ 
-		perror("listen"); 
+		perror("listen\n"); 
 		return 0; 
 	}
 
@@ -188,14 +192,14 @@ int main(int argc, char *argv[]){
 		}
 
 		activity = select( max_sd + 1 , &readfds , NULL , NULL , NULL);
-		if((activity < 0) && (errno!=EINTR)){   
-			printf("select error");   
+		if((activity < 0)){   
+			perror("select error\n");   
 		}
 
 		if(FD_ISSET(server_socket, &readfds)){
 			new_sock=accept(server_socket, (struct sockaddr *)&serv_address, (socklen_t*)&serv_addr_len);
 			if(new_sock<0){
-				perror("accept");
+				perror("accept\n");
 				return 0;
 			}
 			for(int c=0;c<max_clients;c++){
@@ -215,7 +219,7 @@ int main(int argc, char *argv[]){
 			if(notinroom(c)){
 				sd = client_socket[c];
 				if(FD_ISSET(sd, &readfds)){
-					valread=read(cd, message, 64);
+					valread=read(sd, message, 64);
 					if(valread==0){
 						close(sd);
 						client_socket[c]=0;
@@ -227,6 +231,9 @@ int main(int argc, char *argv[]){
 						}
 						if(sockn==1 && !room_started){
 							addtoroom(c);
+						}
+						else if(sockn==1){
+							send(client_socket[c], "0\0", 2, 0);
 						}
 						
 					}

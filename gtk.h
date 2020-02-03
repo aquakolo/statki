@@ -34,3 +34,8 @@ void on_shoot_clicked(GtkButton *but);
 void opturn();
 bool lose();
 void on_ng_but2_clicked();
+void back_login();
+void port_changed(GtkEntry* entry);
+void connect_clicked();
+void refresh_clicked();
+void join_clicked();

@@ -1,7 +1,10 @@
 #include"bot.h"
+#include"else.h"
 #include<time.h>
 #include<stdio.h>
 #include<stdlib.h>
+#include<stdbool.h>
+#include<unistd.h>
 
 int level;
 int mf[10][10];
